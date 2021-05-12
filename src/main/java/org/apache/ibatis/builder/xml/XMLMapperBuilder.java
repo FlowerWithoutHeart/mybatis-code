@@ -56,7 +56,9 @@ import org.apache.ibatis.type.TypeHandler;
 public class XMLMapperBuilder extends BaseBuilder {
 
   private final XPathParser parser;
+  // 存放<parameterMap>标签
   private final MapperBuilderAssistant builderAssistant;
+  // 存放<sql>标签
   private final Map<String, XNode> sqlFragments;
   private final String resource;
 
@@ -122,9 +124,13 @@ public class XMLMapperBuilder extends BaseBuilder {
       builderAssistant.setCurrentNamespace(namespace);
       cacheRefElement(context.evalNode("cache-ref"));
       cacheElement(context.evalNode("cache"));
+      // 解析parameterMap标签
       parameterMapElement(context.evalNodes("/mapper/parameterMap"));
+      // 解析resultMap标签
       resultMapElements(context.evalNodes("/mapper/resultMap"));
+      // 解析sql标签
       sqlElement(context.evalNodes("/mapper/sql"));
+      // 解析CRUD标签
       buildStatementFromContext(context.evalNodes("select|insert|update|delete"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing Mapper XML. The XML location is '" + resource + "'. Cause: " + e, e);

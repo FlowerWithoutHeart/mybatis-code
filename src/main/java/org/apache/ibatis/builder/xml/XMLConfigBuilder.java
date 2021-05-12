@@ -123,7 +123,7 @@ public class XMLConfigBuilder extends BaseBuilder {
       databaseIdProviderElement(root.evalNode("databaseIdProvider"));
       // 将java类型与数据库类型做映射
       typeHandlerElement(root.evalNode("typeHandlers"));
-      // 扫描定义sql的mapper文件
+      // 扫描定义sql的mapper文件，每个mapper文件解析成一个XMLMapperBuilder对象
       mapperElement(root.evalNode("mappers"));
     } catch (Exception e) {
       throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
