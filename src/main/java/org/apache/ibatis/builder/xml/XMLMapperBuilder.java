@@ -102,6 +102,7 @@ public class XMLMapperBuilder extends BaseBuilder {
        * 2. configuration.mapperRegistry存储clazz
        */
       configuration.addLoadedResource(resource);
+      // 将mapper.xml的方法包装成MappedStatement
       bindMapperForNamespace();
     }
 
@@ -442,6 +443,7 @@ public class XMLMapperBuilder extends BaseBuilder {
         // to prevent loading again this resource from the mapper interface
         // look at MapperAnnotationBuilder#loadXmlResource
         configuration.addLoadedResource("namespace:" + namespace);
+        // 将mapper.xml的方法包装成MappedStatement
         configuration.addMapper(boundType);
       }
     }

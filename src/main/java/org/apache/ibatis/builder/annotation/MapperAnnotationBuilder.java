@@ -120,6 +120,7 @@ public class MapperAnnotationBuilder {
       assistant.setCurrentNamespace(type.getName());
       parseCache();
       parseCacheRef();
+      // 遍历dao类的方法定义
       for (Method method : type.getMethods()) {
         if (!canHaveStatement(method)) {
           continue;
@@ -129,6 +130,7 @@ public class MapperAnnotationBuilder {
           parseResultMap(method);
         }
         try {
+          // 将mapper.xml的方法包装成MappedStatement
           parseStatement(method);
         } catch (IncompleteElementException e) {
           configuration.addIncompleteMethod(new MethodResolver(this, method));
@@ -616,6 +618,7 @@ public class MapperAnnotationBuilder {
 
   private SqlSource buildSqlSource(Annotation annotation, Class<?> parameterType, LanguageDriver languageDriver,
       Method method) {
+    // 方法存在操作注解的话，按照对应的注解声明进行初始化
     if (annotation instanceof Select) {
       return buildSqlSourceFromStrings(((Select) annotation).value(), parameterType, languageDriver);
     } else if (annotation instanceof Update) {
@@ -627,6 +630,8 @@ public class MapperAnnotationBuilder {
     } else if (annotation instanceof SelectKey) {
       return buildSqlSourceFromStrings(((SelectKey) annotation).statement(), parameterType, languageDriver);
     }
+
+    // 方法不存在操作注解声明
     return new ProviderSqlSource(assistant.getConfiguration(), annotation, type, method);
   }
 
